@@ -1,12 +1,13 @@
 from torch import Tensor
 
 from tenebris.domain.interfaces.method import ExplainabilityMethod
-from tenebris.domain.interfaces.metric import Metric
+from tenebris.domain.interfaces.metric import Metric, ReduceStrategy
 from tenebris.domain.tensors.functions import make_binary
 
 
 class DeletionCheck(Metric):
     name = "DeletionCheck"
+    reduce_strategy = ReduceStrategy.ACCURACY
 
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> bool:
         model = method.model()

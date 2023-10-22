@@ -1,16 +1,26 @@
 from abc import abstractmethod, ABCMeta
-from typing import Any
+from enum import Enum
+from typing import TypeVar
 
 from torch import Tensor
 
 from tenebris.domain.interfaces.method import ExplainabilityMethod
 
 
+T = TypeVar("T")
+
+
+class ReduceStrategy(Enum):
+    ACCURACY = "accuracy"
+    AVERAGE = "average"
+
+
 class Metric(metaclass=ABCMeta):
     name: str
+    reduce_strategy: ReduceStrategy
 
     @abstractmethod
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> Any:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> T:
         ...
 
     def compute(self, methods: list[ExplainabilityMethod], input_: Tensor, target: int | Tensor, **kwargs) -> dict:
