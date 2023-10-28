@@ -20,10 +20,10 @@ class Metric(metaclass=ABCMeta):
     reduce_strategy: ReduceStrategy
 
     @abstractmethod
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> T:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor) -> T:
         ...
 
-    def compute(self, methods: list[ExplainabilityMethod], input_: Tensor, target: int | Tensor, **kwargs) -> dict:
+    def compute(self, methods: list[ExplainabilityMethod], input_: Tensor, target: int | Tensor) -> dict:
         """Runs the benchmark and computes the relevant metric for each method
 
         Args:
@@ -38,6 +38,6 @@ class Metric(metaclass=ABCMeta):
         metric = {}
 
         for method in methods:
-            metric[method.name] = self._compute(method, input_, target, **kwargs)
+            metric[method.name] = self._compute(method, input_, target)
 
         return metric

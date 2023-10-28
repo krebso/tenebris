@@ -8,10 +8,9 @@ from tenebris.domain.interfaces.method import ExplainabilityMethod
 class GradCAMMethod(ExplainabilityMethod):
     name = "GuidedGradCam"
 
-    def __init__(self, model: Module, attribution_layer_index: int = -3):
+    def __init__(self, model: Module, layer_getter=lambda m: m.features[-3]):
         self._model = model
-        self._attribution_layer_index = attribution_layer_index
-        self._explainer = GuidedGradCam(self._model, self._model.features[self._attribution_layer_index])
+        self._explainer = GuidedGradCam(self._model, layer_getter(self._model))
 
     def model(self) -> Module:
         return self._model

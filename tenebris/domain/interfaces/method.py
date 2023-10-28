@@ -15,9 +15,7 @@ class ExplainabilityMethod(metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def attribute(
-        self, input_: Tensor, target: int | Tensor
-    ) -> Tensor:
+    def attribute(self, input_: Tensor, target: int | Tensor) -> Tensor:
         """Generates explanation for given model and input
 
         Args:

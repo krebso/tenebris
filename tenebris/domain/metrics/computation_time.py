@@ -7,8 +7,8 @@ from tenebris.domain.interfaces.metric import Metric, ReduceStrategy
 from tenebris.domain.interfaces.method import ExplainabilityMethod
 
 
-class ComputationTimeMetric(Metric):
-    name = "ComputationTimeMetric"
+class ComputationTime(Metric):
+    name = "ComputationTime"
     reduce_strategy = ReduceStrategy.AVERAGE
 
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> timedelta:
