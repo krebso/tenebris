@@ -16,5 +16,5 @@ class Sensitivity(Metric):
             explanation_func=method.attribute,
             inputs=input_,
             target=target,
-        )
+        ).item()
 

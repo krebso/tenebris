@@ -16,5 +16,5 @@ class IntegratedGradientsMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def attribute(self, input_: Tensor, target: int) -> Tensor:
-        return self._explainer.attribute(input_, target=target, n_steps=self._n_steps).float()
+    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
+        return self._explainer.attribute(inputs=input_, target=target, n_steps=self._n_steps).float()

@@ -38,6 +38,8 @@ class Metric(metaclass=ABCMeta):
         metric = {}
 
         for method in methods:
+            input_.requires_grad_(True)
             metric[method.name] = self._compute(method, input_, target)
+            input_.requires_grad_(False)
 
         return metric

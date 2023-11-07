@@ -17,6 +17,6 @@ class DeepLiftMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def attribute(self, input_: Tensor, target: int) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
         baselines = self._baselines if self._baselines is not None else torch.zeros_like(input_)
         return self._explainer.attribute(input_, target=target, baselines=baselines)

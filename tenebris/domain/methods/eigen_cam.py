@@ -1,14 +1,15 @@
 from typing import Callable
 
+import torch
 from pytorch_grad_cam import EigenCAM
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from torch import Tensor
 from torch.nn import Module
 
-from tenebris.domain.interfaces.method import ExplainabilityMethod
+from tenebris.domain.interfaces.method import PytorchGradCAMMethod, ExplainabilityMethod
 
 
-class EigenCAMMethod(ExplainabilityMethod):
+class EigenCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
     name = "EigenCAM"
 
     def __init__(self, model: Module, layer_getter: Callable[..., Module], use_cuda: bool = False):
@@ -18,5 +19,12 @@ class EigenCAMMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def attribute(self, input_: Tensor, target: int) -> Tensor:
-        return Tensor(self._explainer(input_, [ClassifierOutputTarget(target)])).float()
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
+        if target.dim() == 0:
+            targets = [ClassifierOutputTarget(target.item())]
+        elif target.dim() == 1:
+            targets = [ClassifierOutputTarget(t.item()) for t in target]
+        else:
+            raise ValueError()
+        with torch.enable_grad():
+            return self._format_tensor(self._explainer(input_, targets))

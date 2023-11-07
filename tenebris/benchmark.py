@@ -1,3 +1,5 @@
+import json
+
 import torch.multiprocessing as mp
 
 from collections import defaultdict
@@ -28,12 +30,19 @@ class BenchmarkService:
 
     def run(self, data: DataLoader) -> None:
         for d in tqdm(data):
+            input_, target = d
             for metric in self._metrics:
-                result = metric.compute(self._methods, *d)
+                result = metric.compute(methods=self._methods, input_=input_, target=target)
                 self._append_results(metric, result)
 
     def results(self) -> dict:
         return self._results
+
+    def save_results(self, path: str) -> None:
+        json.dump(self._results, open(path, "w"))
+
+    def load_results(self, path: str) -> None:
+        self._results = json.load(open(path))
 
     def reduce_results(self) -> dict:
         # TODO: we want some stat here as well, for average the percentiles as well

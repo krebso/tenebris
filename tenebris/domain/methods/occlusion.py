@@ -20,7 +20,7 @@ class OcclusionMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def attribute(self, input_: Tensor, target: int) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
         return self._explainer.attribute(
             inputs=input_,
             sliding_window_shapes=self._sliding_window_shapes,

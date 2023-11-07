@@ -23,7 +23,7 @@ class LimeMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def attribute(self, input_: Tensor, target: int, **kwargs) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: int, **kwargs) -> Tensor:
         return self._explainer.attribute(
-            input_, target=target, baselines=self._baselines, feature_mask=self._superpixel_fn(input_), n_samples=1000
+            input_, target=target, baselines=self._baselines, feature_mask=self._superpixel_fn(input_), n_samples=100
         )

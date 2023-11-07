@@ -24,7 +24,7 @@ class LRPEpsilonMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def attribute(self, input_: Tensor, target: int) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
         self._set_propagation_rules()
         attribution = self._explainer.attribute(input_, target)
         self._set_propagation_rules()

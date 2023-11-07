@@ -24,5 +24,5 @@ class Infidelity(Metric):
             attributions=attribution,
             baselines=self._baselines,
             target=target
-        )
+        ).item()
 
