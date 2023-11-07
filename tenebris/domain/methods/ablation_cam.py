@@ -27,4 +27,8 @@ class AblationCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
         else:
             raise ValueError()
         with torch.enable_grad():
-            return self._format_tensor(self._explainer(input_, targets))
+            with torch.enable_grad():
+                # because of sensitivity:
+                if len(targets) == 1 and (n_samples := input_.size()[0]) > 1:
+                    targets  = targets * n_samples
+                return self._format_tensor(self._explainer(input_, targets))
