@@ -1,3 +1,4 @@
+from typing import Callable
 from abc import abstractmethod, ABCMeta
 
 import numpy as np
@@ -29,15 +30,23 @@ class ExplainabilityMethod(metaclass=ABCMeta):
             Tensor of explanations
         """
 
-    def attribute(self, input_: Tensor | tuple[Tensor, ...], target: Tensor) -> Tensor | tuple[Tensor, ...]:
+    def attribute(self, input_: Tensor | tuple[Tensor, ...], target: int | Tensor) -> Tensor:
         if isinstance(input_, tuple):
-            # FIXME target dims
-            return tuple(self._attribute_tensor(i, target) for i in input_)
+            assert all(map(lambda t: isinstance(t, Tensor), input_))
+            assert all(map(lambda t: len(t.size()) == 3, input_))  # C x W x H
+            input_ = torch.stack(input_)
+
+        batch_size = torch.size(input_)[0]
+
+        if isinstance(target, int):
+            target = torch.stack((target for _ in range(batch_size)))
+
         return self._attribute_tensor(input_, target)
 
 
-class PytorchGradCAMMethod:
-    @staticmethod
-    def _format_tensor(t: np.ndarray) -> Tensor:
-        # add lost channel to BW images
-        return torch.from_numpy(t).unsqueeze(1)
+def pytorch_gradcam_format_explanation(f: Callable[..., np.ndarray]) -> Callable[..., Tensor]:
+    # add lost channel to BW images
+    # assert this is only when it is indeed bw image kekw
+    def _format_tensor(*args, **kwargs) -> Tensor:
+        return torch.from_numpy(f(*args, **kwargs)).unsqueeze(1)
+    return _format_tensor
