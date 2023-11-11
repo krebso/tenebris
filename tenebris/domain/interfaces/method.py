@@ -1,7 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Callable
 
-import numpy as np
 import torch
 from torch import Tensor
 from torch.nn import Module
@@ -18,7 +16,7 @@ class ExplainabilityMethod(metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def _attribute_tensor(self, input_: Tensor, target: int | Tensor) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
         """Generates explanation for given model and input
 
         Args:
@@ -39,13 +37,8 @@ class ExplainabilityMethod(metaclass=ABCMeta):
         if isinstance(target, int):
             target = torch.stack([torch.tensor(target) for _ in range(batch_size)])
 
+        if (n_target := target.size()[0]) != batch_size:
+            assert n_target == 1
+            target = torch.stack([target for _ in range(batch_size)])
+
         return self._attribute_tensor(input_, target)
-
-
-def pytorch_gradcam_format_explanation(f: Callable[..., np.ndarray]) -> Callable[..., Tensor]:
-    # add lost channel to BW images
-    # assert this is only when it is indeed bw image kekw
-    def _format_tensor(*args, **kwargs) -> Tensor:
-        return torch.from_numpy(f(*args, **kwargs)).unsqueeze(1)
-
-    return _format_tensor
