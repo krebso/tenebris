@@ -1,9 +1,8 @@
 from typing import Callable
 
 import numpy as np
-
 from captum.attr import Lime
-from skimage.segmentation import quickshift, morphological_chan_vese, chan_vese
+from skimage.segmentation import chan_vese, morphological_chan_vese, quickshift
 from torch import Tensor
 from torch.nn import Module
 
@@ -13,7 +12,9 @@ from tenebris.domain.interfaces.method import ExplainabilityMethod
 class LimeMethod(ExplainabilityMethod):
     name = "LIME"
 
-    def __init__(self, model: Module, baselines = int | float | Tensor, superpixel_fn: Callable[[Tensor], Tensor] | None = None):
+    def __init__(
+        self, model: Module, baselines=int | float | Tensor, superpixel_fn: Callable[[Tensor], Tensor] | None = None
+    ):
         self._model = model
         self._explainer = Lime(self._model)
         self._baselines = baselines

@@ -1,6 +1,15 @@
 black:
-	 black -l 120 tenebris/
+	black -l 120 tenebris/
 
 isort:
-	isort tenebris
+	isort tenebris/
+
+pycln:
+	pycln tenebris/
+
+flake8:
+	flake8 tenebris/
+
+mypy:
+	mypy tenebris/
 

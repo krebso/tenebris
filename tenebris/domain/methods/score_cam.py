@@ -6,7 +6,8 @@ from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from torch import Tensor
 from torch.nn import Module
 
-from tenebris.domain.interfaces.method import ExplainabilityMethod, PytorchGradCAMMethod
+from tenebris.domain.interfaces.method import (ExplainabilityMethod,
+                                               PytorchGradCAMMethod)
 
 
 class ScoreCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
@@ -29,5 +30,5 @@ class ScoreCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
         with torch.enable_grad():
             # because of sensitivity:
             if len(targets) == 1 and (n_samples := input_.size()[0]) > 1:
-                targets  = targets * n_samples
+                targets = targets * n_samples
             return self._format_tensor(self._explainer(input_, targets))

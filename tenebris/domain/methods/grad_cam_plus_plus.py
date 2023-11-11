@@ -4,7 +4,8 @@ from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from torch import Tensor
 from torch.nn import Module
 
-from tenebris.domain.interfaces.method import PytorchGradCAMMethod, ExplainabilityMethod
+from tenebris.domain.interfaces.method import (ExplainabilityMethod,
+                                               PytorchGradCAMMethod)
 
 
 class GradCAMPlusPlusMethod(ExplainabilityMethod, PytorchGradCAMMethod):

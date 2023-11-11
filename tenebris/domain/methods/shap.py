@@ -18,6 +18,9 @@ class GradientShapMethod(ExplainabilityMethod):
         return self._model
 
     def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
-        baselines = self._baselines if self._baselines is not None else torch.zeros_like(input_ if isinstance(input_, Tensor) else input_[0])
+        baselines = (
+            self._baselines
+            if self._baselines is not None
+            else torch.zeros_like(input_ if isinstance(input_, Tensor) else input_[0])
+        )
         return self._explainer.attribute(input_, target=target, baselines=baselines)
-
