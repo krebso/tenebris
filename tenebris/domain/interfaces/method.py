@@ -10,22 +10,11 @@ class ExplainabilityMethod(metaclass=ABCMeta):
 
     @abstractmethod
     def model(self) -> Module:
-        """
-        Returns:
-             Model the method is using
-        """
+        """Return model the method is using"""
 
     @abstractmethod
     def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
-        """Generates explanation for given model and input
-
-        Args:
-            input_: torch Tensor
-            target: with respect to what we compute the attribution
-
-        Returns:
-            Tensor of explanations
-        """
+        """Generates explanation for model given input and target"""
 
     def attribute(self, input_: Tensor | tuple[Tensor, ...], target: int | Tensor) -> Tensor:
         if isinstance(input_, tuple):
