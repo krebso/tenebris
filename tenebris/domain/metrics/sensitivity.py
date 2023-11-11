@@ -1,3 +1,5 @@
+from typing import Any
+
 from captum.metrics import sensitivity_max
 from torch import Tensor
 
@@ -9,7 +11,7 @@ class Sensitivity(Metric):
     name = "Sensitivity"
     reduce_strategy = ReduceStrategy.AVERAGE
 
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> bool:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> float:
         return sensitivity_max(
             explanation_func=method.attribute,
             inputs=input_,

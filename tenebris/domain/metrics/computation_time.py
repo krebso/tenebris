@@ -1,7 +1,5 @@
 import time
 
-from datetime import timedelta
-
 from torch import Tensor
 
 from tenebris.domain.interfaces.method import ExplainabilityMethod

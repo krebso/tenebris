@@ -1,3 +1,5 @@
+from typing import Any
+
 import torch
 
 from torch import Tensor
@@ -11,7 +13,7 @@ class DeletionCheck(Metric):
     name = "DeletionCheck"
     reduce_strategy = ReduceStrategy.ACCURACY
 
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> bool:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> bool:
         model = method.model()
 
         output = model(input_)

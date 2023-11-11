@@ -1,3 +1,5 @@
+from typing import Any
+
 from torch import Tensor
 
 from tenebris.domain.interfaces.method import ExplainabilityMethod
@@ -9,6 +11,6 @@ class EHR(Metric):
     name = "Effective Heat Ratio"
     reduce_strategy = ReduceStrategy.AVERAGE
 
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> float:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> float:
         binary_explanation = positive_attribution_mask(method.attribute(input_, target))
         return jaccard_similarity(binary_explanation, kwargs["annotation"])

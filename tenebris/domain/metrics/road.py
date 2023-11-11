@@ -1,4 +1,4 @@
-from typing import Type, cast
+from typing import Any, Type, cast
 
 import numpy
 
@@ -19,13 +19,13 @@ class ROADMoRF(Metric):
         self._target_cls = target_output_class
         self._metric = ROADMostRelevantFirst(percentile=self._percentile)
 
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: Tensor, **kwargs) -> float:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: Tensor, **kwargs: Any) -> float:
         attr = method.attribute(input_, target)
         assert isinstance(attr, Tensor)
         score = self._metric(
             input_,
             attr.detach().numpy(),
-            [self._target_cls(target.item())],
+            [self._target_cls(target.item() if isinstance(target, Tensor) else target)],
             method.model(),
         )
         score = cast(numpy.ndarray, score)

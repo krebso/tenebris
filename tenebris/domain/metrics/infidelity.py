@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable
 
 from captum.metrics import infidelity
 from torch import Tensor
@@ -15,7 +15,7 @@ class Infidelity(Metric):
         self._perturbation_fn = perturbation_fn
         self._baselines = baselines
 
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs) -> bool:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> float:
         attribution = method.attribute(input_, target)
         return infidelity(
             forward_func=method.model(),
