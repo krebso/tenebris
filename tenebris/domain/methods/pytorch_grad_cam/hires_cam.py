@@ -1,16 +1,18 @@
 from typing import Callable
 
+import numpy as np
 import torch
+
 from pytorch_grad_cam import HiResCAM
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from torch import Tensor
 from torch.nn import Module
 
-from tenebris.domain.interfaces.method import (ExplainabilityMethod,
-                                               PytorchGradCAMMethod)
+from tenebris.domain.interfaces.method import ExplainabilityMethod
+from tenebris.domain.methods.pytorch_grad_cam import format_tensor
 
 
-class HiResCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
+class HiResCAMMethod(ExplainabilityMethod):
     name = "HiResCAM"
 
     def __init__(self, model: Module, layer_getter: Callable[..., Module], use_cuda: bool = False):
@@ -20,7 +22,8 @@ class HiResCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
     def model(self) -> Module:
         return self._model
 
-    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
+    @format_tensor
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> np.ndarray:
         if target.dim() == 0:
             targets = [ClassifierOutputTarget(target.item())]
         elif target.dim() == 1:
@@ -28,4 +31,4 @@ class HiResCAMMethod(ExplainabilityMethod, PytorchGradCAMMethod):
         else:
             raise ValueError()
         with torch.enable_grad():
-            return self._format_tensor(self._explainer(input_, targets))
+            return self._explainer(input_, targets)

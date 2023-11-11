@@ -19,7 +19,6 @@ class Metric(metaclass=ABCMeta):
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor) -> float:
         """Compute the metric for method"""
 
-
     def compute(self, methods: list[ExplainabilityMethod], input_: Tensor, target: int | Tensor) -> dict:
         metric = {}
 

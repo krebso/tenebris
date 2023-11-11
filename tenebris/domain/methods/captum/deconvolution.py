@@ -1,4 +1,5 @@
-import torch
+from typing import cast
+
 from captum.attr import Deconvolution
 from torch import Tensor
 from torch.nn import Module
@@ -16,5 +17,5 @@ class DeconvolutionMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
-        return self._explainer.attribute(input_, target=target)
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
+        return cast(Tensor, self._explainer.attribute(input_, target=target))

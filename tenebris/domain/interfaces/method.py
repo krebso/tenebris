@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 import torch
+
 from torch import Tensor
 from torch.nn import Module
 
@@ -18,8 +19,8 @@ class ExplainabilityMethod(metaclass=ABCMeta):
 
     def attribute(self, input_: Tensor | tuple[Tensor, ...], target: int | Tensor) -> Tensor:
         if isinstance(input_, tuple):
-            assert all(map(lambda t: isinstance(t, Tensor), input_))
-            assert all(map(lambda t: len(t.size()) == 3, input_))  # C x W x H
+            assert all((lambda t: isinstance(t, Tensor), input_))
+            assert all((lambda t: len(t.size()) == 3, input_))  # C x W x H
             input_ = torch.stack(input_)
 
         batch_size = input_.size()[0]

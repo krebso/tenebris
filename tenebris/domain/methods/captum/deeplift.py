@@ -1,4 +1,7 @@
+from typing import cast
+
 import torch
+
 from captum.attr import DeepLift
 from torch import Tensor
 from torch.nn import Module
@@ -17,6 +20,6 @@ class DeepLiftMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
         baselines = self._baselines if self._baselines is not None else torch.zeros_like(input_)
-        return self._explainer.attribute(input_, target=target, baselines=baselines)
+        return cast(Tensor, self._explainer.attribute(input_, target=target, baselines=baselines))

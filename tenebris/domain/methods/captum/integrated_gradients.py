@@ -1,3 +1,5 @@
+from typing import cast
+
 from captum.attr import IntegratedGradients
 from torch import Tensor
 from torch.nn import Module
@@ -16,5 +18,5 @@ class IntegratedGradientsMethod(ExplainabilityMethod):
     def model(self) -> Module:
         return self._model
 
-    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
-        return self._explainer.attribute(inputs=input_, target=target, n_steps=self._n_steps).float()
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
+        return cast(Tensor, self._explainer.attribute(inputs=input_, target=target, n_steps=self._n_steps).float())

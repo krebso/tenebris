@@ -1,3 +1,5 @@
+from typing import cast
+
 from captum.attr import LRP
 from captum.attr._utils.lrp_rules import EpsilonRule
 from torch import Tensor
@@ -15,17 +17,17 @@ class LRPEpsilonMethod(ExplainabilityMethod):
 
     def _set_propagation_rules(self) -> None:
         for module in self._model.modules():
-            module.rule = EpsilonRule()
+            module.rule = EpsilonRule()  # type: ignore
 
     def _unset_propagation_rules(self) -> None:
         for module in self._model.modules():
-            module.rule = None
+            module.rule = None  # type: ignore
 
     def model(self) -> Module:
         return self._model
 
-    def _attribute_tensor(self, input_: Tensor, target: int) -> Tensor:
+    def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
         self._set_propagation_rules()
         attribution = self._explainer.attribute(input_, target)
         self._set_propagation_rules()
-        return attribution
+        return cast(Tensor, attribution)
