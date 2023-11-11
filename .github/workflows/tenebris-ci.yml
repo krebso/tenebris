@@ -20,20 +20,16 @@ jobs:
         pip install -r requirements.txt
 
     - name: black
-      run: black -l 120 --check tenebris/
+      run: black -l 120 --check .
 
     - name: isort
-      run: isort tenebris/ --check-only
+      run: isort --diff --check-only --settings-file pyproject.toml .
 
     - name: pycln
-      run: pycln tenebris/
+      run: pycln --diff --check --config pyproject.toml .
 
     - name: flake8
-      run: flake8 tenebris/
+      run: flake8 .
 
     - name: mypy
-      run: mypy tenebris/
-
-        # - name: Test with pytest
-       test/  #   run: pytest test/
-
+      run: mypy --config-file ./pyproject.toml --install-types --non-interactive --namespace-packages --explicit-package-bases .
