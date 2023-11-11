@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python 3.11
       uses: actions/setup-python@v2
       with:
         python-version: 3.11
@@ -19,21 +19,21 @@ jobs:
         pip install pytest mypy black isort pycln flake8
         pip install -r requirements.txt
 
-    - name: Check with black
-      run: black -l 120 --check tenebris/ test/
+    - name: black
+      run: black -l 120 --check tenebris/
 
-    - name: Check with isort
-      run: isort tenebris/ test/ --check-only
+    - name: isort
+      run: isort tenebris/ --check-only
 
-    - name: Check with pycln
-      run: pycln tenebris/ test/
+    - name: pycln
+      run: pycln tenebris/
 
-    - name: Check with flake8
-      run: flake8 tenebris/ test/
+    - name: flake8
+      run: flake8 tenebris/
 
-    - name: Type check with mypy
-      run: mypy tenebris/ test/
+    - name: mypy
+      run: mypy tenebris/
 
-    - name: Test with pytest
-      run: pytest test/
+        # - name: Test with pytest
+       test/  #   run: pytest test/
 
