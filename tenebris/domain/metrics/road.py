@@ -19,7 +19,7 @@ class ROADMoRF(Metric):
         self._target_cls = target_output_class
         self._metric = ROADMostRelevantFirst(percentile=self._percentile)
 
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: Tensor, **kwargs: Any) -> float:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor) -> float:
         attr = method.attribute(input_, target)
         assert isinstance(attr, Tensor)
         score = self._metric(
