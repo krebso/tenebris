@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
+from typing import Any
 
 from torch import Tensor
 
@@ -16,7 +17,7 @@ class Metric(metaclass=ABCMeta):
     reduce_strategy: ReduceStrategy
 
     @abstractmethod
-    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor) -> float:
+    def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor) -> Any:
         """Compute the metric for method"""
 
     def compute(self, methods: list[ExplainabilityMethod], input_: Tensor, target: int | Tensor) -> dict:
