@@ -34,6 +34,3 @@ jobs:
     - name: mypy
       run: mypy tenebris/
 
-        # - name: Test with pytest
-       test/  #   run: pytest test/
-
