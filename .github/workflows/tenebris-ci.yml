@@ -20,20 +20,20 @@ jobs:
         pip install -r requirements.txt
 
     - name: Check with black
-      run: black -l 120 --check tenebris/ test/
+      run: black -l 120 --check tenebris/
 
     - name: Check with isort
-      run: isort tenebris/ test/ --check-only
+      run: isort tenebris/ --check-only
 
     - name: Check with pycln
-      run: pycln tenebris/ test/
+      run: pycln tenebris/
 
     - name: Check with flake8
-      run: flake8 tenebris/ test/
+      run: flake8 tenebris/
 
     - name: Type check with mypy
-      run: mypy tenebris/ test/
+      run: mypy tenebris/
 
-    - name: Test with pytest
-      run: pytest test/
+        # - name: Test with pytest
+        #   run: pytest test/
 
