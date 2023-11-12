@@ -12,5 +12,7 @@ class EHR(Metric):
     reduce_strategy = ReduceStrategy.AVERAGE
 
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> float:
-        binary_explanation = positive_attribution_mask(method.attribute(input_, target))
+        attribution = method.attribute(input_, target)
+        assert isinstance(attribution, Tensor)
+        binary_explanation = positive_attribution_mask(attribution)
         return jaccard_similarity(binary_explanation, kwargs["annotation"])

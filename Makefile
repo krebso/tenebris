@@ -8,16 +8,13 @@ isort:
 	isort --settings-file pyproject.toml .
 
 mypy:
-	mypy --config-file ./pyproject.toml --install-types --non-interactive --namespace-packages --explicit-package-bases tenebris/
+	mypy --config-file pyproject.toml --install-types --non-interactive --namespace-packages --explicit-package-bases .
 
 pycln:
 	pycln --config pyproject.toml .
 
-install_precommit:
-	pre-commit install && pre-commit autoupdate
-
-uninstall_precommit:
-	pre-commit uninstall
+test:
+	pytest --config pyproject.toml .
 
 check:
 	$(MAKE) pycln black isort flake8 mypy

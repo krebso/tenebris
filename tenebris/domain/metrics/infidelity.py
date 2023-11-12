@@ -1,5 +1,7 @@
 from typing import Any, Callable
 
+import torch
+
 from captum.metrics import infidelity
 from torch import Tensor
 
@@ -16,12 +18,12 @@ class Infidelity(Metric):
         self._baselines = baselines
 
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> float:
-        attribution = method.attribute(input_, target)
-        return infidelity(
+        metric = infidelity(
             forward_func=method.model(),
             perturb_func=self._perturbation_fn,
             inputs=input_,
-            attributions=attribution,
+            attributions=method.attribute(input_, target),  # type: ignore
             baselines=self._baselines,
             target=target,
-        ).item()
+        )
+        return (torch.sum(metric) / len(metric)).item()

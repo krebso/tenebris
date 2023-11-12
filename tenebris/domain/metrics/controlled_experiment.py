@@ -14,6 +14,7 @@ class ControlledExperiment(Metric):
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor, **kwargs: Any) -> float:
         annotation = cast(Tensor, kwargs["annotation"])
         synthetic_input = input_ * annotation
-        binary_synthetic_explanation = positive_attribution_mask(method.attribute(synthetic_input, target))
-
+        attribution = method.attribute(synthetic_input, target)
+        assert isinstance(attribution, Tensor)
+        binary_synthetic_explanation = positive_attribution_mask(attribution)
         return jaccard_similarity(annotation, binary_synthetic_explanation)

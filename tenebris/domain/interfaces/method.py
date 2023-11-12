@@ -17,18 +17,20 @@ class ExplainabilityMethod(metaclass=ABCMeta):
     def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
         """Generates explanation for model given input and target"""
 
-    def attribute(self, input_: Tensor | tuple[Tensor, ...], target: int | Tensor) -> Tensor:
-        if isinstance(input_, tuple):
-            assert all((lambda t: isinstance(t, Tensor), input_))
-            assert all((lambda t: len(t.size()) == 3, input_))  # C x W x H
-            input_ = torch.stack(input_)
-
+    def _attribute(self, input_: Tensor, target: int | Tensor) -> Tensor:
         batch_size = input_.size()[0]
         if isinstance(target, int):
             target = torch.stack([torch.tensor(target) for _ in range(batch_size)])
 
         if (n_target := target.size()[0]) != batch_size:
             assert n_target == 1
-            target = torch.stack([target for _ in range(batch_size)])
+            target = torch.cat([target for _ in range(batch_size)], dim=0)
 
         return self._attribute_tensor(input_, target)
+
+    def attribute(self, input_: Tensor | tuple[Tensor, ...], target: int | Tensor) -> Tensor | tuple[Tensor, ...]:
+        if isinstance(input_, tuple):
+            assert all((isinstance(t, Tensor) for t in input_))
+            assert all((len(t.size()) == 4 for t in input_))  # B x C x W x H
+            return tuple(self._attribute(t, target) for t in input_)
+        return self._attribute(input_, target)
