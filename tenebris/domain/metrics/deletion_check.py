@@ -19,7 +19,9 @@ class DeletionCheck(Metric):
         output = model(input_)
         _, output_class = torch.max(output, dim=1)
 
-        mask = positive_attribution_mask(method.attribute(input_, target))
+        attribution = method.attribute(input_, target)
+        assert isinstance(attribution, Tensor)
+        mask = positive_attribution_mask(attribution)
         masked_input = input_ * (~mask)
 
         masked_output = model(masked_input)

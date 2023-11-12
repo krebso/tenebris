@@ -6,12 +6,14 @@ authors = ["Martin Krebs"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-torch = "^2.1.0"
 captum = "^0.6.0"
 grad-cam = "^1.4.8"
 scikit-image = "^0.22.0"
+torch = "^2.1.0"
+torchvision = "^0.16.0"
 
 [tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
 mypy = "^0.990"
 black = "^22.6.0"
 pycln = "^2.1.1"
@@ -50,10 +52,10 @@ all = true
 
 [tool.black]
 line-length = 120
-target-version = ['py311']
+target-version = ['py310']
 
 [tool.isort]
-py_version = 311
+py_version = 310
 profile = "black"
 line_length = 120
 atomic = true
