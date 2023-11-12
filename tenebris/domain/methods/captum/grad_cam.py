@@ -19,5 +19,4 @@ class GradCAMMethod(ExplainabilityMethod):
         return self._model
 
     def _attribute_tensor(self, input_: Tensor, target: Tensor) -> Tensor:
-        attr = self._explainer.attribute(input_, target)
-        return cast(Tensor, attr)
+        return cast(Tensor, self._explainer.attribute(input_, target))
