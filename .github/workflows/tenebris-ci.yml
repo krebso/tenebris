@@ -13,23 +13,33 @@ jobs:
       with:
         python-version: 3.11
 
-    - name: Install dependencies
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install project
+      run: poetry install --no-interaction
+
+    - name: Run black
       run: |
-        python -m pip install --upgrade pip
-        pip install pytest mypy black isort pycln flake8
-        pip install -r requirements.txt
+        source .venv/bin/activate
+        black -l 120 --check .
 
-    - name: black
-      run: black -l 120 --check .
+    - name: Run isort
+      run: |
+        source .venv/bin/activate
+        isort --diff --check-only --settings-file pyproject.toml .
 
-    - name: isort
-      run: isort --diff --check-only --settings-file pyproject.toml .
+    - name: Run pycln
+      run: |
+        source .venv/bin/activate
+        pycln --diff --check --config pyproject.toml .
 
-    - name: pycln
-      run: pycln --diff --check --config pyproject.toml .
+    - name: Run flake8
+      run: |
+        source .venv/bin/activate
+        flake8 .
 
-    - name: flake8
-      run: flake8 .
-
-    - name: mypy
-      run: mypy --config-file ./pyproject.toml --install-types --non-interactive --namespace-packages --explicit-package-bases .
+    - name: Run mypy
+      run: |
+        source .venv/bin/activate
+        mypy --config-file ./pyproject.toml --install-types --non-interactive --namespace-packages --explicit-package-bases .
