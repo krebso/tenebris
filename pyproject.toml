@@ -11,6 +11,7 @@ grad-cam = "^1.4.8"
 scikit-image = "^0.22.0"
 torch = "^2.1.0"
 torchvision = "^0.16.0"
+polars = "^0.19.13"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
