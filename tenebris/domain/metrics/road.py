@@ -8,7 +8,6 @@ from torch import Tensor
 
 from tenebris.domain.interfaces.method import ExplainabilityMethod
 from tenebris.domain.interfaces.metric import Metric, ReduceStrategy
-
 from tenebris.domain.methods.pytorch_grad_cam import format_target
 
 

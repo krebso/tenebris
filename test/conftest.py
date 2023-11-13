@@ -14,8 +14,8 @@ from tenebris.domain.methods.pytorch_grad_cam.grad_cam_plus_plus import GradCAMP
 from tenebris.domain.metrics.computation_time import ComputationTime
 from tenebris.domain.metrics.deletion_check import DeletionCheck
 from tenebris.domain.metrics.infidelity import Infidelity
-from tenebris.domain.metrics.sensitivity import Sensitivity
 from tenebris.domain.metrics.road import ROADMoRF
+from tenebris.domain.metrics.sensitivity import Sensitivity
 from tenebris.domain.tensors.functions import leave_out_perturbation_fn
 
 
@@ -90,6 +90,7 @@ def sensitivity_metric() -> Sensitivity:
 @pytest.fixture()
 def infidelity_metric() -> Infidelity:
     return Infidelity(perturbation_fn=leave_out_perturbation_fn, baselines=0)
+
 
 @pytest.fixture()
 def road_metric() -> ROADMoRF:
