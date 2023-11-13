@@ -16,7 +16,9 @@ def format_tensor(f: Callable[..., tuple[Tensor, np.ndarray]]) -> Callable[..., 
     return _format_tensor
 
 
-def format_target(target: Tensor) -> list[Module]:
+def format_target(target: int | Tensor) -> list[Module]:
+    if isinstance(target, int):
+        return [ClassifierOutputTarget(target)]
     if target.dim() == 0:
         return [ClassifierOutputTarget(target.item())]
     if target.dim() == 1:
