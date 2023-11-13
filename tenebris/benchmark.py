@@ -20,7 +20,7 @@ class BenchmarkService:
         self._metrics = metrics
         self._methods = methods  # TODO: think about if this makes sense, or should be part of the run
 
-        self._results = {metric.name: defaultdict(list) for metric in self._metrics}
+        self._results: dict = {metric.name: defaultdict(list) for metric in self._metrics}
 
     def _append_results(self, metric: Metric, results: dict) -> None:
         for key, value in results.items():
