@@ -6,6 +6,7 @@ from torch import Tensor
 @pytest.mark.parametrize(
     "metric_name",
     [
+        "road_metric",
         "sensitivity_metric",
         "infidelity_metric",
     ],

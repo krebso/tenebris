@@ -8,6 +8,7 @@ from torch import Tensor
 
 from tenebris.domain.interfaces.method import ExplainabilityMethod
 from tenebris.domain.interfaces.metric import Metric, ReduceStrategy
+from tenebris.domain.methods.pytorch_grad_cam import format_target
 
 
 class ROADMoRF(Metric):
@@ -20,13 +21,14 @@ class ROADMoRF(Metric):
         self._metric = ROADMostRelevantFirst(percentile=self._percentile)
 
     def _compute(self, method: ExplainabilityMethod, input_: Tensor, target: int | Tensor) -> float:
+        # improve tensor typing
         attr = method.attribute(input_, target)
         assert isinstance(attr, Tensor)
         score = self._metric(
-            input_,
-            attr.detach().numpy(),
-            [self._target_cls(target.item() if isinstance(target, Tensor) else target)],
-            method.model(),
+            input_tensor=input_,
+            cams=attr.detach().numpy(),
+            targets=format_target(target),
+            model=method.model(),
         )
         score = cast(numpy.ndarray, score)
         return sum(score) / len(score)
