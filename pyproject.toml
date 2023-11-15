@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "tenebris"
-version = "0.1.0"
-description = "This package is used for static analysis, linting and formatting."
+version = "0.0.1"
+description = "This package is used for benchmarking of explainability methods for convolution neural networks"
 authors = ["Martin Krebs"]
 
 [tool.poetry.dependencies]
